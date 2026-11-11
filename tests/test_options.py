@@ -1182,6 +1182,11 @@ def test_missing_envvar(runner):
     assert result.exit_code == 2
     assert "Error: Missing option '--foo'." in result.output
 
+    # When auto_envvar_prefix is configured, the derived env var is displayed
+    result = runner.invoke(cli, auto_envvar_prefix="MYAPP")
+    assert result.exit_code == 2
+    assert "Error: Missing option '--foo' (env var: 'MYAPP_FOO')." in result.output
+
 
 @pytest.mark.parametrize(
     ("envvar", "expected"),
